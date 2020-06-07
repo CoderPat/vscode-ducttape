@@ -1,0 +1,181 @@
+{
+    "scopeName": "source.tape",
+    "patterns": [
+        {
+            "include": "#comment"
+        },
+        {
+            "include": "#keyword"
+        },
+        {
+            "include": "#definition"
+        },
+        {
+            "include": "#task"
+        },
+        {
+            "include": "#block"
+        }
+    ],
+    "repository": {
+        "comment": {
+            "begin": "(^\\s+)?(?<=^|\\W)(?<!-)(?=#)(?!#{)",
+            "beginCaptures": {
+                "1": {
+                    "name": "punctuation.whitespace.comment.leading.shell"
+                }
+            },
+            "end": "(?!\\G)",
+            "patterns": [
+                {
+                    "begin": "#!",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.shebang.shell"
+                        }
+                    },
+                    "end": "$",
+                    "name": "comment.line.number-sign.shebang.shell"
+                },
+                {
+                    "begin": "#",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.definition.comment.shell"
+                        }
+                    },
+                    "end": "$",
+                    "name": "comment.line.number-sign.shell"
+                }
+            ]
+        },
+        "keyword": {
+            "match": "global|import|baseline|branch|branchpoint|group|via",
+            "name": "keyword.statement"
+        },
+        "definition": {
+            "match": "(plan|versioner|package|action|reach)\\s+(\\w+)",
+            "name": "meta.function",
+            "captures": {
+                "1": {
+                    "name": "storage.type"
+                },
+                "2": {
+                    "name": "entity.name.function"
+                }
+            }
+        },
+        "task": {
+            "begin": "(task)\\s+(\\w+)",
+            "name": "meta.function",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.type"
+                },
+                "2": {
+                    "name": "entity.name.function"
+                }
+            },
+            "end": "(?<=\\})",
+            "patterns": [
+                {
+                    "match": "(<|>)\\s*(\\w+)(=((\\w+)|((\\$\\w+)?(@)(\\w+)?)))?",
+                    "name": "meta.argument",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.operator"
+                        },
+                        "2": {
+                            "name": "variable.parameter"
+                        },
+                        "4": {
+                            "name": "variable.other"
+                        },
+                        "5": {
+                            "name": "constant.other"
+                        },
+                        "8": {
+                            "name": "keyword.operator"
+                        },
+                        "9": {
+                            "name": "entity.other.inherited-class"
+                        }
+                    }
+                },
+                {
+                    "match": "(::)\\s*(\\w+)=((\\w+)|@)",
+                    "name": "meta.argument",
+                    "captures": {
+                        "1": {
+                            "name": "keyword.operator"
+                        },
+                        "2": {
+                            "name": "variable.language"
+                        },
+                        "4": {
+                            "name": "constant.other"
+                        }
+                    }
+                },
+                {
+                    "name": "meta.embedded.shellscript",
+                    "begin": "\\{",
+                    "end": "\\}",
+                    "beginCaptures": {
+                        "0": {
+                            "name": "punctuation.bracket.open"
+                        }
+                    },
+                    "endCaptures": {
+                        "0": {
+                            "name": "punctuation.bracket.close"
+                        }
+                    },
+                    "patterns": [
+                        {
+                            "include": "source.shell"
+                        }
+                    ]
+                }
+            ]
+        },
+        "block": {
+            "name": "meta.block",
+            "begin": "\\{",
+            "end": "\\}",
+            "beginCaptures": {
+                "0": {
+                    "name": "punctuation.bracket.open"
+                }
+            },
+            "endCaptures": {
+                "0": {
+                    "name": "punctuation.bracket.close"
+                }
+            },
+            "patterns": [
+                {
+                    "include": "#comment"
+                },
+                {
+                    "include": "#keyword"
+                },
+                {
+                    "include": "#definition"
+                },
+                {
+                    "match": "(\\w+)=(\\w+)?",
+                    "name": "meta.variable",
+                    "captures": {
+                        "1": {
+                            "name": "variable.parameter"
+                        },
+                        "2": {
+                            "name": "constant.other"
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
